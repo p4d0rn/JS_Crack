@@ -779,7 +779,7 @@ function (a) {
 
 ![image-20230711210945219](../.gitbook/assets/image-20230711210945219.png)
 
-* constant：是否为常量
+* constant：判断当前变量是否被更改
 * identifier：标识符的Node对象
 * kind：表明a是add的参数
 * referenced：标识符是否被引用
