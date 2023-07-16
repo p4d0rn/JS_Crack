@@ -6,6 +6,7 @@
 * [AST原理与实现](./Theory/ast.md)
 * [Babel API](./Theory/babel.md)
 * [AST自动化混淆JS](./Theory/obfuscation.md)
+* [AST自动化还原JS](./Theory/restore.md)
 
 ## 🎬Slider
 
