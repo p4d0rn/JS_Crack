@@ -1,5 +1,3 @@
-
-
 > The night is dark and full of terrors
 
 # 0x01 Prerequisites

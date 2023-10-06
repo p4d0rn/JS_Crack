@@ -1,3 +1,5 @@
+> Nothing someone says before the word “but” really counts.
+
 ## 0x01 Babel Intro
 
 上一节使用Python实现了一个简易的解析器，了解了源代码到AST的转换过程。但若从头开始实现一个编译器是十分复杂的。

@@ -1,3 +1,5 @@
+> Laughter is poison to fear.
+
 # Theory and Implementation of Abstract Syntax Tree
 
 ## 0x01 compilation and AST

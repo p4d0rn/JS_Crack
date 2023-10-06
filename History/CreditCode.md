@@ -23,12 +23,15 @@
 下了XHR断点，回溯调用栈没啥发现。
 
 由于是往请求头添加字段，试试搜headers关键字。Lucky Guess！！！
+
 ![image-20230303132409873](../.gitbook/assets/image-20230303132409873.png)
 
 调试可知，t是接口路径，e.data是请求体
+
 ![image-20230303132534858](../.gitbook/assets/image-20230303132534858.png)
 
 首先看字段名的生成，跟进a.default
+
 ![image-20230303132645363](../.gitbook/assets/image-20230303132645363.png)
 
 取出参数并转为小写，其中将第二个参数json对象转为json字符串
@@ -36,6 +39,7 @@
 o.default传入两个参数，第一个是t和n拼接，第二个是a.default(t)得到的
 
 跟进a.default
+
 ![image-20230303132912083](../.gitbook/assets/image-20230303132912083.png)
 
 就是对参数进行一些处理，后面模拟的时候直接用python调js的函数就好了
@@ -43,6 +47,7 @@ o.default传入两个参数，第一个是t和n拼接，第二个是a.default(t)
 其中o.default.n调试可知为20
 
 o.default.codes也是固定的
+
 ![image-20230303133105692](../.gitbook/assets/image-20230303133105692.png)
 
 整理一下：
@@ -61,9 +66,11 @@ var r = function () {
 由于我们使用的就只有这一个接口，直接把这个`a.default(t)`（t为接口名）写死在爬虫程序就可以了，
 
 回退跟进`o.default(t+n ,a.default(t))` 
+
 ![image-20230303133455027](../.gitbook/assets/image-20230303133455027.png)
 
 再跟进去
+
 ![image-20230303133533124](../.gitbook/assets/image-20230303133533124.png)
 
 熟悉的HMAC，就是加盐的哈希。这里盐是`a.default(t)`，要哈希的数据是`t+n` 
@@ -73,6 +80,7 @@ var r = function () {
 笔者还以为这个前端又魔改了HMAC算法。根据以往经验，就算魔改了，也只是在HMAC入口处或出口处稍作改动，不会改其内部算法
 
 试探性地搜一下`HMAC`
+
 ![image-20230303133732042](../.gitbook/assets/image-20230303133732042.png)
 
 HmacSHA512？？？去在线网站试了试果然是128个字符
@@ -89,9 +97,11 @@ res = hmac.new(salt.encode(), data.encode(), digestmod=hashlib.sha512).hexdigest
 接着HMAC返回值`subStr(8, 20)`，即从第八个字符开始取20个字符，作为字段名
 
 接着看字段值：
+
 ![image-20230303132534858](../.gitbook/assets/image-20230303132534858.png)
 
 跟进`s.default()`发现返回也是写死的
+
 ![image-20230303134519884](../.gitbook/assets/image-20230303134519884.png)
 
 ![image-20230303134655421](../.gitbook/assets/image-20230303134655421.png)

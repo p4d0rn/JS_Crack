@@ -1,4 +1,6 @@
-# Basic Confusions About JavaScript
+> Every flight begins with a fall
+
+**Basic Confusions About JavaScript**
 
 JS混淆：通过复杂冗余的代码替换，把原来可读性高的代码转化为可读性低的代码，且前后执行效果等同
 
@@ -18,9 +20,9 @@ console.log(new Date().format('yyyy-MM-dd'));
 
 但若这是某网站前端的一段关键代码，如前后端的通信过程，那么在代码发布后就很可能被某些有心人利用，而JS混淆做的事情就是增加破解的成本，用以防护JS代码。
 
-## 0x01 String obfuscation
+# 0x01 String obfuscation
 
-### Object Attributes Access
+## Object Attributes Access
 
 ```js
 function Dog(name) {
@@ -78,7 +80,7 @@ console['log'](new window['Date']()['format']('yyyy-MM-dd'));
 
 将对象属性/方法的访问方式改成中括号后，就能进行下一步字符串混淆了
 
-### Hex
+## Hex
 
 JS中的字符串支持十六进制表示
 
@@ -93,7 +95,7 @@ print(hexStr)
 
 十六进制的字符串放到控制台回车就能还原
 
-### unicode
+## unicode
 
 JS中不止字符串可以用unicode，标识符也支持unicode形式
 
@@ -121,7 +123,7 @@ console.log(new \u0077\u0069\u006e\u0064\u006f\u0077['\u0044\u0061\u0074\u0065']
 
 但实际JS混淆中，标识符一般不会替换成unicode形式，因为要还原十分简单，直接放控制台输出就行。通常的混淆方式是替换成没有语义的，但看上去相似的名字，如`_0x21dd83`、`_0x21dd84`，或者是由大写字母O、小写字母o、数字0组成的名字，如`O0o00O`、`O0o00o`（标识符不以数字开头）
 
-### ASCII Array
+## ASCII Array
 
 既可以用来混淆字符串，也可以用来混淆代码
 
@@ -148,7 +150,7 @@ var codeStr = String.fromCharCode.apply(null,[118, 97, 114, 32, 97, 32, 61, 32, 
 eval(codeStr)
 ```
 
-### String Constant
+## String Constant
 
 将字符串编码得到密文，使用前再调用相应的解码函数去解密，得到明文
 
@@ -159,13 +161,13 @@ atob('c2VjcmV0')  // base64解码
 
 建议减少使用JS自带的函数，而是自己去实现相应的函数，因为不管如何混淆，最终执行过程中，JS自带的函数名是固定的，可以通过Hook技术定位到关键代码。
 
-### Number Constant
+## Number Constant
 
 在使用一些加密算法或哈希算法中，会用到一些数值常量，如MD5中的`0x67452301`、`0xefcdab89`、`0x98badcfe`，通过这些常量可以识别出使用的算法，因此有必要对这些常量进行编码。如使用异或的特性：a ^ b = c 则 c ^ b = a，要替换掉a，c相当于密文，b相当于密钥
 
-## 0x02 Reference obfuscation
+# 0x02 Reference obfuscation
 
-### Array Index
+## Array Index
 
 JS的数组可以存在各种类型，将代码中的字符串、布尔值、数组、函数、对象等放到一个大数组中，使用的时候再进行引用，可以有效降低代码可读性
 
@@ -190,7 +192,7 @@ console.log(new \u0077\u0069\u006e\u0064\u006f\u0077['\u0044\u0061\u0074\u0065']
 eval(BigArr[6].apply(null, [97, 108, 101, 114, 116, 40, 34, 54, 54, 54, 34, 41, 59]));
 ```
 
-### Array Shuffle
+## Array Shuffle
 
 上面数组混淆成员与索引是一一对应的，可以将数组打乱以增加逆向工作量，但引用前需要进行还原。
 
@@ -253,7 +255,7 @@ console.log(new \u0077\u0069\u006e\u0064\u006f\u0077['\u0044\u0061\u0074\u0065']
 eval(BigArr[6].apply(null, [97, 108, 101, 114, 116, 40, 34, 54, 54, 54, 34, 41, 59]));
 ```
 
-### Junk Code
+## Junk Code
 
 一些没有意义但可以混淆视听的代码
 
@@ -282,7 +284,7 @@ var str = 'mm'
 str = _0x20ab1fxe2(test, 3, 4); // 70
 ```
 
-### jsfuck
+## JsFuck
 
 将js代码转化为只用6个字符就能表示的代码
 
@@ -312,9 +314,9 @@ str = _0x20ab1fxe2(test, 3, 4); // 70
 
 实际开发中，jsfuck应用有限，一般只应用于一部分代码（jsfuck代码量太大）
 
-## 0x03 Protection in Execution Flow
+# 0x03 Protection in Execution Flow
 
-### Control Flow Flattening
+## Control Flow Flattening
 
 代码开发中会有很多流程控制相关的代码，即代码中有很多分支语句（if语句、switch语句），其中switch语句中case块是平级的，这就能应用到控制流平坦化。以下面代码为例
 
@@ -414,7 +416,7 @@ Date.prototype.\u0066\u006f\u0072\u006d\u0061\u0074 = function(formatStr) {
 console.log(new \u0077\u0069\u006e\u0064\u006f\u0077['\u0044\u0061\u0074\u0065']()['format']('\u0079\u0079\u0079\u0079\u002d\u004d\u004d\u002d\u0064\u0064'));
 ```
 
-### Comma Expression
+## Comma Expression
 
 逗号运算符把多个表达式或语句连成一个复合语句
 
@@ -468,13 +470,13 @@ function test(a, b, c) {
 console.log(test());
 ```
 
-## 0x04 Other Protection Strategies
+# 0x04 Other Protection Strategies
 
-### eval Encryption
+## Eval Encryption
 
 上面已经讲过了eval会把字符串当js代码执行，但直接传字符串未免太显眼，除了上面的`fromCharCode`来还原字符串再传入eval，还可以把一个自执行函数作为eval的参数，自执行函数（可以看成一个解密函数）将返回一个字符串。
 
-### Memory Explosion
+## Memory Explosion
 
 往代码中加入死代码，正常情况下这段代码不会执行，当检测到函数被格式化或者函数被Hook，就会跳转到这段代码并执行，直到内存溢出，浏览器会提示Out of memory程序崩溃
 
@@ -490,9 +492,9 @@ function b() {
 
 上面这段代码不像`while(true)`那么明显，它不断往数组push，循环结束条件是`i<c`，但每次都更新c为数据长度，这段代码就永远不会结束了。
 
-### formatted code detection
+## Formatted Code Detection
 
-检测代码是否格式化，在Chrome开发者工具中把代码格式化后会产生一个后缀为`formatted`的文件。
+先将代码压缩，并在代码里面检测代码是否格式化，在Chrome开发者工具中把代码格式化后会产生一个后缀为`formatted`的文件。
 
 js中函数是可以转字符串的，`func.toString()`或`func + ''`
 
@@ -550,3 +552,22 @@ _0x16e48a();
 var a = 0x1;
 ```
 
+## Forever Debugger Loop
+
+写个定时器死循环来无限debug
+
+```js
+function debug() {
+    debugger;
+    setTimeout(debug, 1);
+}
+debug();
+```
+
+# 0x05 Sum up
+
+本文介绍了常见的JS混淆手段
+
+JS中的对象访问可以通过点访问也能通过中括号访问，改成中括号访问可以进一步对字符串进行混淆。对于字符串，可以通过各种编码或自定义的编码函数进行混淆，如JS支持字符串以十六进制表示，JS标识符支持unicode形式，还可以用ASCCI数组、base64等。对于数值常量，可以将其改写成两个数值异或。对字符串进行混淆后，在代码中可通过数组索引的方式来引用，再把字符串数组乱序。表达式、函数调用可以替换成花指令，即没有意义的嵌套。jsfuck将代码转化为6字符的表示，但由于其代码量太大，实际中只能少部分代码利用。接着是执行流程的混淆，控制流平坦化是利用switch case语句，在一个死循环中遍历一个分发器，分发器决定代码的执行顺序(case)，最终匹配不到，跳到default执行break退出循环。还有就是Eval混淆，将一串编码后的字符串输入到解码函数后，得到待执行的代码字符串，再传入eval执行。这种混淆的特征太明显了，就是一大段字符串传入一个函数。或许可以改进一下，把字符串拆分为多段，再放入一个数组，可以再乱序一下，最后通过数组索引拼接后传入eval
+
+还有一些反调试手段。如对代码进行压缩，并检测代码是否被格式化，若格式化则进行内存爆破（死循环增大数组、正则无限回溯）；无限debugger。

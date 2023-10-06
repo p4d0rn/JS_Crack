@@ -14,5 +14,10 @@
 
 ## 🍖Practice
 
+* [经验之谈](./History/exp.md)
+* [Decrypt Demo](./History/decrypt.md)
+* [Cookie Demo](./History/cookie.md)
+* [WebPack Demo](./History/webpack.md)
+* [Binary Stream Demo](./History/stream.md)
 * [某查查爬取统一社会信用代码](./History/CreditCode.md)
 
